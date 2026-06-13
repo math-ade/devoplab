@@ -5,11 +5,6 @@ pipeline {
         jdk 'java 21'
     }
     stages {
-        stage('Wipe Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
         stage('Build with Maven') {
             steps {
                 dir('devopproject') {
