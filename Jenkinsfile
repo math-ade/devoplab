@@ -20,7 +20,11 @@ pipeline {
         stage('Run Java Application') {
             steps {
                 sh '''
-                    nohup java -jar devopproject/target/devopproject-1.0-SNAPSHOT.jar > app.log 2>&1 &
+                    # Kill any old version running on port 8081 to avoid crashes
+                    pkill -f "devopproject.*.jar" || true
+                    
+                    # Launch application on port 8081 in the background
+                    nohup java -jar -Dserver.port=8081 devopproject/target/devopproject-1.0-SNAPSHOT.jar > app.log 2>&1 &
                     sleep 2
                 '''
             }
