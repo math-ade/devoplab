@@ -1,12 +1,34 @@
-        stage('Run Java Application') {
+pipeline {
+    agent any
+    tools {
+        maven 'maven 3'
+        jdk 'java 21'
+    }
+    stages {
+        stage('Build with Maven') {
+            steps {
+                dir('devopproject') {
+                    sh 'mvn clean package'
+                }
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                // This converts your JAR file into an isolated container image
+                sh 'docker build -t devopproject:latest .'
+            }
+        }
+        stage('Deploy Staging Container') {
             steps {
                 sh '''
-                    # Kill any stale versions running on port 8081
-                    pkill -f "devopproject.*.jar" || true
+                    # Clear out any old versions to avoid conflicts
+                    docker stop devops-staging || true
+                    docker rm devops-staging || true
                     
-                    # Force the embedded engine to bind to 0.0.0.0 (Global Internet)
-                    nohup java -jar -Dserver.address=0.0.0.0 -Dserver.port=8081 devopproject/target/devopproject-1.0-SNAPSHOT.jar > app.log 2>&1 &
-                    sleep 2
+                    # Launch your containerized application out to the internet
+                    docker run -d --name devops-staging -p 8081:8081 devopproject:latest
                 '''
             }
         }
+    }
+}
