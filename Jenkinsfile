@@ -12,20 +12,21 @@ pipeline {
                 }
             }
         }
-        stage('Archive Artifacts') {
+        stage('Build Docker Image') {
             steps {
-                archiveArtifacts artifacts: 'devopproject/target/*.jar', followSymlinks: false
+                // This builds a container package out of your JAR file
+                sh 'docker build -t devopproject:latest .'
             }
         }
-        stage('Run Java Application') {
+        stage('Deploy Staging Container') {
             steps {
                 sh '''
-                    # Kill any old version running on port 8081 to avoid crashes
-                    pkill -f "devopproject.*.jar" || true
+                    # Stop and clear the old container to avoid name clashes
+                    docker stop devops-staging || true
+                    docker rm devops-staging || true
                     
-                    # Launch application on port 8081 in the background
-                    nohup java -jar -Dserver.port=8081 devopproject/target/devopproject-1.0-SNAPSHOT.jar > app.log 2>&1 &
-                    sleep 2
+                    # Run your app inside the isolated Docker environment
+                    docker run -d --name devops-staging -p 8081:8081 devopproject:latest
                 '''
             }
         }
