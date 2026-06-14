@@ -15,6 +15,6 @@ public class App {
 
     @GetMapping("/")
     public String home() {
-        return "<h1>🎉 DevOps Project Pipeline Success! 🎉</h1><p>Your 3-day deployment journey is complete and fully working!</p>";
+        return "<h1>🎉 My automated DevOps pipeline is officially live! 🎉</h1><p>Your 3-day deployment journey is complete and fully working!</p>";
     }
 }
