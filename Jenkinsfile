@@ -12,20 +12,23 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube Analysis') {
+            steps {
+                dir('devopproject') {
+                    sh 'mvn sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.token=squ_f380980e4e9d35aff5247d4c85b473e9fa5841eb'
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
-                // This converts your JAR file into an isolated container image
                 sh 'docker build -t devopproject:latest .'
             }
         }
         stage('Deploy Staging Container') {
             steps {
                 sh '''
-                    # Clear out any old versions to avoid conflicts
                     docker stop devops-staging || true
                     docker rm devops-staging || true
-                    
-                    # Launch your containerized application out to the internet
                     docker run -d --name devops-staging -p 8081:8081 devopproject:latest
                 '''
             }
