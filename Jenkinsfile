@@ -9,7 +9,7 @@ pipeline {
             steps {
                 dir('devopproject') {
                     sh 'mvn clean package -DskipTests'
-'
+
                 }
             }
         }
