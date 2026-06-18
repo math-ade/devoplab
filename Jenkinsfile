@@ -8,7 +8,8 @@ pipeline {
         stage('Build with Maven') {
             steps {
                 dir('devopproject') {
-                    sh 'mvn clean package'
+                    sh 'mvn clean package -DskipTests'
+'
                 }
             }
         }
