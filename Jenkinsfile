@@ -1,22 +1,10 @@
 pipeline {
-    agent any
-    tools {
-        maven 'maven 3'
-        jdk 'java 21'
-    }
+    agent { label 'Staging-Agent' } 
     stages {
         stage('Build with Maven') {
             steps {
                 dir('devopproject') {
                     sh 'mvn clean package -DskipTests'
-
-                }
-            }
-        }
-        stage('SonarQube Analysis') {
-            steps {
-                dir('devopproject') {
-                    sh 'mvn sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000 -Dsonar.token=squ_f380980e4e9d35aff5247d4c85b473e9fa5841eb'
                 }
             }
         }
