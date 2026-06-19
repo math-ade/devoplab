@@ -1,5 +1,10 @@
 pipeline {
-    agent { label 'Staging-Agent' } 
+    agent { label 'Staging-Agent' }
+    environment {
+        // Explicitly force the Java 21 path we verified on Workstation 2
+        JAVA_HOME = '/usr/lib/jvm/java-21-amazon-corretto.x86_64'
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
+    }
     stages {
         stage('Build with Maven') {
             steps {
