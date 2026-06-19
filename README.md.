@@ -1,0 +1,28 @@
+# Distributed CI/CD Pipeline for Enterprise Java Applications
+A production-ready, multi-node Continuous Integration and Continuous Deployment...
+                       +-------------------------------------------------+
+
+                       |                  GitHub Repo                    |
+                       +-------------------------------------------------+
+                                                |
++---------------------------------------------------------------------------------------------------+
+
+| AWS EC2 Instance 1: Jenkins Controller (Master Node)                                              |
++---------------------------------------------------------------------------------------------------+
+                                                | Secure SSH Tunnel (Port 22 Key Exchange)
++---------------------------------------------------------------------------------------------------+
+
+| AWS EC2 Instance 2: Staging Worker (Agent Node)                                                   |
++---------------------------------------------------------------------------------------------------+
+## 🛠️ Tech Stack & Infrastructure
+* **Orchestration:** Jenkins Automation Server 
+* **Infrastructure:** Amazon Web Services (AWS) EC2 Linux Virtual Servers...
+pipeline {
+    agent { label 'Staging-Agent' }
+    environment {
+        JAVA_HOME = '/usr/lib/jvm/java-21-amazon-corretto.x86_64'
+    }
+...
+## 🚀 Key Technical Milestones Met
+1. Distributed Worker Clustering...
+2. Resource Bottleneck Remediation (Exit Code 137)...
